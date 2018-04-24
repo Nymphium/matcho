@@ -1,12 +1,13 @@
 matcho: lambda calculus, pattern match, adt, and *first class pattern*
 ===
 
-#thought
+# Thought: first class pattern
 
 ```
 e :: = ...
-    | "match" e "with" "|"? pattern {"|" pattern}*
+    | "match" e "with" "|"? pattern {"|" pattern}* ["|" ".."]
     | e ("when" e)? "->" e
+    | "{<" e+ ">}"
 
 pattern ::= ...
     | "+" e
@@ -34,4 +35,29 @@ let _ =
    * ~> 4 + 4 ~> 8
   *)
 ```
+
+## extensible pattern-match
+```ocaml
+let e : t = (* something *)
+let b : u = (* something *)
+let m : (t, u) cases -> u =
+  match e with
+  | p -> b
+  | ..
+
+let ps : (t, u) cases = {<
+ | p1 -> (* something has type u *)
+ | p2 -> (* ... *)
+>}
+in m extend by ps
+(*
+ * equilvalent to:
+ * match e with
+ * | p -> b
+ * | p1 -> ...
+ * | p2 -> ...
+*)
+```
+
+... think concrete syntax later
 
